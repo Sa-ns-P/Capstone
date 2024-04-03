@@ -14,44 +14,19 @@ source("Functions.R")
 ### Data Set-up
 
 ```{r}
-#hist(newnames$white_black) #skewed...
-#hist(log(newnames$white_black)) #hell yeah
-```
-
-```{r}
 names_wwbcol = read.csv('Names/merged_names.csv') #summarized demographic dataset
-names_wwbcol #342
-
 namesfull1 = read.csv('Names/newnamestoanalyze.csv') #trial dataset
-length(unique(namesfull1$participant)) #359
-
 namesgen = read.csv('Names/unique_participants_newnames.csv') #trial dataset
-namesgen #359
-
-#lost a couple of rows?
 ```
 
 ```{r}
 faces_wwbcol = read.csv('Faces/merged_faces.csv') #summarized demographic dataset
-faces_wwbcol #349 vs
-
 facesfull1 = read.csv('Faces/newfacestoanalyze.csv') #trial dataset
-length(unique(facesfull1$participant)) #362
-
 facesgen = read.csv('Faces/unique_participants_newfaces.csv') #trial dataset
-facesgen #362
-```
-
-359 - 342
-
-```{r}
-names_wwbcol_test = faces_wwbcol %>% select(participant, white_black)
-nn = facesfull1 %>% left_join(faces_wwbcol, by = 'participant')
-nn %>% filter(participant == 's.89a5d44b-60aa-48d5-b86f-bc04ca849dce.txt')
 ```
 
 ```{r}
-#names setup (implicit/explicit
+#names setup (implicit/explicit)
 
 #imputation: 0 and NA with 0.01 (smallest ratios), Inf with max value (rounded up towards nearest hundreth)
 newnames = names_wwbcol %>% 
@@ -195,38 +170,143 @@ e_m_full2 = lmer(log(response_time) ~
 summary(e_m_full2)
 
 # White people approaching White Names.
-White_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","namesracewhite","movementApproach:namesracewhite","movementApproach:RaceWhite","RaceWhite:namesracewhite","movementApproach:RaceWhite:namesracewhite"))
-1-exp(White_Part_A_WN)
+White_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "namesracewhite",
+    "movementApproach:namesracewhite",
+    "movementApproach:RaceWhite",
+    "RaceWhite:namesracewhite",
+    "movementApproach:RaceWhite:namesracewhite"
+  )
+)
+1 - exp(White_Part_A_WN)
 
 
 #Black People approaching White Names
-Black_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","namesracewhite","movementApproach:namesracewhite"))
+Black_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "namesracewhite",
+    "movementApproach:namesracewhite"
+  )
+)
 exp(Black_Part_A_WN)
 
 
 #White People approaching Black Names
-White_Part_A_BN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","movementApproach:RaceWhite"))
-1-exp(White_Part_A_BN) 
+White_Part_A_BN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "movementApproach:RaceWhite"
+  )
+)
+1 - exp(White_Part_A_BN) 
 
 
 # White people avoiding White Names.
-White_Part_Av_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("RaceWhite","namesracewhite","RaceWhite:namesracewhite"))
-1-exp(White_Part_Av_WN)
+White_Part_Av_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("RaceWhite", "namesracewhite", "RaceWhite:namesracewhite")
+)
+1 - exp(White_Part_Av_WN)
 
 
 
 # White people approach White Names Vs Black Names
-White_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","movementApproach:namesracewhite","RaceWhite:namesracewhite","movementApproach:RaceWhite:namesracewhite"))
+White_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "namesracewhite",
+    "movementApproach:namesracewhite",
+    "RaceWhite:namesracewhite",
+    "movementApproach:RaceWhite:namesracewhite"
+  )
+)
 exp(White_Part_A_WNvsBN)
 
 
 # Black people approach White Names Vs Black Names
-Black_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","movementApproach:namesracewhite"))
+Black_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("namesracewhite", "movementApproach:namesracewhite")
+)
 exp(-Black_Part_A_WNvsBN)
 
 
 # White people avoid White Names Vs Black Names
-White_Part_Av_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","RaceWhite:namesracewhite"))
+White_Part_Av_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCPosWhite_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("namesracewhite", "RaceWhite:namesracewhite")
+)
 exp(White_Part_Av_WNvsBN)
 ```
 
@@ -262,39 +342,144 @@ e_m_full_faces2 = lmer(log(response_time) ~
 summary(e_m_full_faces2)
 
 
-# White people approaching White Names.
-White_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","facesracewhite","movementApproach:facesracewhite","movementApproach:RaceWhite","facesracewhite:RaceWhite","movementApproach:facesracewhite:RaceWhite"))
+# White people approaching White faces
+White_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "movementApproach:RaceWhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
 exp(White_Part_A_WN)
 
 
-#Black People approaching White Names
-Black_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","facesracewhite","movementApproach:facesracewhite"))
+#Black People approaching White faces
+Black_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "facesracewhite",
+    "movementApproach:facesracewhite"
+  )
+)
 exp(Black_Part_A_WN)
 
 
-#White People approaching Black Names
-White_Part_A_BN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","movementApproach:RaceWhite"))
+#White People approaching Black faces
+White_Part_A_BN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "movementApproach:RaceWhite"
+  )
+)
 exp(White_Part_A_BN) 
 
 
-# White people avoiding White Names.
-White_Part_Av_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("RaceWhite","facesracewhite","facesracewhite:RaceWhite"))
+# White people avoiding White faces
+White_Part_Av_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("RaceWhite", "facesracewhite", "facesracewhite:RaceWhite")
+)
 exp(White_Part_Av_WN)
 
 
 
-# White people approach White Names Vs Black Names
-White_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","movementApproach:facesracewhite","facesracewhite:RaceWhite","movementApproach:facesracewhite:RaceWhite"))
+# White people approach White faces Vs Black faces
+White_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c(
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
 exp(White_Part_A_WNvsBN)
 
 
-# Black people approach White Names Vs Black Names
-Black_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","movementApproach:facesracewhite"))
+# Black people approach White faces Vs Black faces
+Black_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("facesracewhite", "movementApproach:facesracewhite")
+)
 exp(-Black_Part_A_WNvsBN)
 
 
-# White people avoid White Names Vs Black Names
-White_Part_Av_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","facesracewhite:RaceWhite"))
+# White people avoid White faces Vs Black faces
+White_Part_Av_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Race",
+    "VCNegWhite_1",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = e_namesfull,
+  coef_interest = c("facesracewhite", "facesracewhite:RaceWhite")
+)
 exp(White_Part_Av_WNvsBN)
 ```
 
@@ -329,6 +514,160 @@ i_m_full2 = lmer(log(response_time) ~
       data=i_namesfull)
 
 summary(i_m_full2)
+
+# White people approaching White Names.
+White_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "movementApproach:RaceWhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
+exp(White_Part_A_WN)
+
+
+#Black People approaching White Names
+Black_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "facesracewhite",
+    "movementApproach:facesracewhite"
+  )
+)
+exp(Black_Part_A_WN)
+
+
+#White People approaching Black Names
+White_Part_A_BN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "movementApproach:RaceWhite"
+  )
+)
+exp(White_Part_A_BN) 
+
+
+# White people avoiding White Names.
+White_Part_Av_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+   "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c("RaceWhite", "facesracewhite", "facesracewhite:RaceWhite")
+)
+exp(White_Part_Av_WN)
+
+
+
+# White people approach White Names Vs Black Names
+White_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c(
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
+exp(White_Part_A_WNvsBN)
+
+
+# Black people approach White Names Vs Black Names
+Black_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+   "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c("facesracewhite", "movementApproach:facesracewhite")
+)
+exp(-Black_Part_A_WNvsBN)
+
+
+# White people avoid White Names Vs Black Names
+White_Part_Av_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+   "movement",
+    "Age",
+    "Sex",
+    "Race",
+    "Political_1",
+    "FTBlack_1",
+    "movement*namesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_namesfull,
+  coef_interest = c("facesracewhite", "facesracewhite:RaceWhite")
+)
+exp(White_Part_Av_WNvsBN)
 ```
 
 ### Implicit Faces
@@ -361,4 +700,144 @@ i_m_full_faces2 = lmer(log(response_time) ~
       data=i_facesfull)
 
 summary(i_m_full_faces2)
+
+
+# White people approaching White faces
+White_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "movementApproach:RaceWhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
+exp(White_Part_A_WN)
+
+
+#Black People approaching White faces
+Black_Part_A_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c(
+    "movementApproach",
+    "facesracewhite",
+    "movementApproach:facesracewhite"
+  )
+)
+exp(Black_Part_A_WN)
+
+
+#White People approaching Black faces
+White_Part_A_BN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c(
+    "movementApproach",
+    "RaceWhite",
+    "movementApproach:RaceWhite"
+  )
+)
+exp(White_Part_A_BN) 
+
+
+# White people avoiding White faces
+White_Part_Av_WN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c("RaceWhite", "facesracewhite", "facesracewhite:RaceWhite")
+)
+exp(White_Part_Av_WN)
+
+
+# White people approach White faces Vs Black faces
+White_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c(
+    "facesracewhite",
+    "movementApproach:facesracewhite",
+    "facesracewhite:RaceWhite",
+    "movementApproach:facesracewhite:RaceWhite"
+  )
+)
+exp(White_Part_A_WNvsBN)
+
+
+# Black people approach White faces Vs Black faces
+Black_Part_A_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c("facesracewhite", "movementApproach:facesracewhite")
+)
+exp(-Black_Part_A_WNvsBN)
+
+
+# White people avoid White faces Vs Black faces
+White_Part_Av_WNvsBN = bootstrap_func(
+  target = "log(response_time)",
+  ind_var = c(
+    "movement",
+    "Age",
+    "Neuroticism",
+    "white_black",
+    "movement*facesrace*Race"
+  ),
+  group_var = "participant",
+  dataset = i_facesfull,
+  coef_interest = c("facesracewhite", "facesracewhite:RaceWhite")
+)
+exp(White_Part_Av_WNvsBN)
 ```
