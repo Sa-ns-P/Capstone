@@ -1,0 +1,364 @@
+---
+title: "Capstone stuff combined"
+format: html
+editor: visual
+---
+
+```{r}
+library(lme4)
+library(lmerTest)
+library(tidyverse)
+source("Functions.R")
+```
+
+### Data Set-up
+
+```{r}
+#hist(newnames$white_black) #skewed...
+#hist(log(newnames$white_black)) #hell yeah
+```
+
+```{r}
+names_wwbcol = read.csv('Names/merged_names.csv') #summarized demographic dataset
+names_wwbcol #342
+
+namesfull1 = read.csv('Names/newnamestoanalyze.csv') #trial dataset
+length(unique(namesfull1$participant)) #359
+
+namesgen = read.csv('Names/unique_participants_newnames.csv') #trial dataset
+namesgen #359
+
+#lost a couple of rows?
+```
+
+```{r}
+faces_wwbcol = read.csv('Faces/merged_faces.csv') #summarized demographic dataset
+faces_wwbcol #349 vs
+
+facesfull1 = read.csv('Faces/newfacestoanalyze.csv') #trial dataset
+length(unique(facesfull1$participant)) #362
+
+facesgen = read.csv('Faces/unique_participants_newfaces.csv') #trial dataset
+facesgen #362
+```
+
+359 - 342
+
+```{r}
+names_wwbcol_test = faces_wwbcol %>% select(participant, white_black)
+nn = facesfull1 %>% left_join(faces_wwbcol, by = 'participant')
+nn %>% filter(participant == 's.89a5d44b-60aa-48d5-b86f-bc04ca849dce.txt')
+```
+
+```{r}
+#names setup (implicit/explicit
+
+#imputation: 0 and NA with 0.01 (smallest ratios), Inf with max value (rounded up towards nearest hundreth)
+newnames = names_wwbcol %>% 
+  mutate(white_black = ifelse(is.na(white_black), 0.01, white_black)) %>% 
+  mutate(white_black = ifelse(white_black == 0, 0.01, white_black)) %>% 
+  mutate(log_white_black = ifelse(white_black == Inf, 5.65,
+                                  log(white_black))) %>% 
+  mutate(white_black = ifelse(white_black == Inf, exp(5.65), white_black)) %>% 
+  select(participant, white_black, log_white_black)
+  
+namesfull = namesfull1 %>% 
+  select(participant, stimuli, valence, movement, response_time, ImpVsExp, Age,
+      Sex, Race = RaceEthnicity, Political_1, Zip, Occupations, RaceEthnicity,
+      
+      FTBlack_1, VCNegBlack_1, VCPosBlack_1, ECBlack_Neighbors,
+      ECBlack_WorkColleagues, ECBlack_CloseFriends, ECBlack_Married, 
+      FTWhite_1, VCNegWhite_1, VCPosWhite_1, ECWhite_Neighbors,
+      ECWhite_WorkColleagues, ECWhite_CloseFriends, ECWhite_Married,
+      
+      Unclear, Comments, accuracy_total, Openness, Conscientiousness,
+      Extraversion, Agreeableness, Neuroticism,
+      
+      namesrace = race, namesgender = gender #variables
+      ) %>%  mutate(
+      Race = ifelse(
+        Race == "White alone, not Hispanic or Latino", 'White', 'Black'))
+
+#left join with added racial demographic variable
+namesfull = namesfull %>% left_join(newnames, by = 'participant')
+
+#drop accuracy total below 0.7
+namesfull = namesfull %>% filter(accuracy_total >= 0.70)
+
+#get ranking here, instead of characters (reduces dimention)
+cols = c('ECBlack_Neighbors', 'ECBlack_WorkColleagues', 'ECBlack_CloseFriends', 'ECBlack_Married', 'ECWhite_Neighbors','ECWhite_WorkColleagues', 'ECWhite_CloseFriends', 'ECWhite_Married')
+
+for(c in cols){
+  c_index = grep(c, colnames(namesfull))
+  namesfull[,c_index] = ifelse(namesfull[,c_index] == 'None', 1, namesfull[,c_index])
+  namesfull[,c_index] = ifelse(namesfull[,c_index] == 'All', 6, namesfull[,c_index])
+  namesfull[,c_index] = as.numeric(namesfull[,c_index])
+}
+dim(namesfull)
+
+i_namesfull = namesfull %>% filter(ImpVsExp == 'Implicit')
+e_namesfull = namesfull %>% filter(ImpVsExp == 'Explicit')
+
+#change ref levels
+e_namesfull= e_namesfull %>% mutate(movement= as.factor(movement))
+e_namesfull$movement = relevel(e_namesfull$movement,ref="Avoid")
+
+i_namesfull= i_namesfull %>% mutate(movement= as.factor(movement))
+i_namesfull$movement = relevel(i_namesfull$movement,ref="Avoid")
+```
+
+```{r}
+#faces
+newfaces = faces_wwbcol %>% select(participant, white_black)
+
+#imputation: 0 and NA with 0.01 (smallest ratios), Inf with max value (rounded up towards nearest hundreth)
+newfaces = faces_wwbcol %>% 
+  mutate(white_black = ifelse(is.na(white_black) | white_black == 0, 0.01, white_black)) %>% 
+  mutate(log_white_black = ifelse(white_black == Inf, 5.65, log(white_black))) %>% 
+  mutate(white_black = ifelse(white_black == Inf, exp(5.65), white_black)) %>% 
+  select(participant, white_black)
+
+facesfull = facesfull1 %>% 
+  select(participant, stimuli, valence, movement, response_time, ImpVsExp, Age,
+      Sex, Race = RaceEthnicity, Political_1, Zip, Occupations, RaceEthnicity,
+      
+      FTBlack_1, VCNegBlack_1, VCPosBlack_1, ECBlack_Neighbors,
+      ECBlack_WorkColleagues, ECBlack_CloseFriends, ECBlack_Married, 
+      FTWhite_1, VCNegWhite_1, VCPosWhite_1, ECWhite_Neighbors,
+      ECWhite_WorkColleagues, ECWhite_CloseFriends, ECWhite_Married,
+      
+      Unclear, Comments, accuracy_total, Openness, Conscientiousness,
+      Extraversion, Agreeableness, Neuroticism,
+      
+      facesrace = race, facesgender = gender #variables
+      ) %>%  mutate(
+      Race = ifelse(
+        Race == "White alone, not Hispanic or Latino", 'White', 'Black'))
+         
+#left join with added racial demographic variable
+facesfull = facesfull %>% left_join(newfaces, by = 'participant')
+
+#drop accuracy total below 0.7
+facesfull = facesfull %>% filter(accuracy_total >= 0.7)
+
+#get ranking here, instead of characters (reduces dimention)
+cols = c('ECBlack_Neighbors', 'ECBlack_WorkColleagues', 'ECBlack_CloseFriends', 'ECBlack_Married', 'ECWhite_Neighbors','ECWhite_WorkColleagues', 'ECWhite_CloseFriends', 'ECWhite_Married')
+
+for(c in cols){
+  c_index = grep(c, colnames(facesfull))
+  facesfull[,c_index] = ifelse(facesfull[,c_index] == 'None', 1, facesfull[,c_index])
+  facesfull[,c_index] = ifelse(facesfull[,c_index] == 'All', 6, facesfull[,c_index])
+  facesfull[,c_index] = as.numeric(facesfull[,c_index])
+}
+
+i_facesfull = facesfull %>% filter(ImpVsExp == 'Implicit')
+e_facesfull = facesfull %>% filter(ImpVsExp == 'Explicit')
+
+#change ref levels
+e_facesfull = e_facesfull %>% mutate(movement= as.factor(movement))
+e_facesfull$movement = relevel(e_facesfull$movement,ref="Avoid")
+
+i_facesfull = i_facesfull %>% mutate(movement= as.factor(movement))
+i_facesfull$movement = relevel(i_facesfull$movement,ref="Avoid")
+```
+
+### Explicit Names
+
+```{r}
+e_m_full = lmer(log(response_time) ~
+      movement + Age + Sex + Race + Political_1 + Occupations + white_black + 
+        
+      FTBlack_1 + VCNegBlack_1 + VCPosBlack_1 + ECBlack_Neighbors +
+      ECBlack_WorkColleagues + ECBlack_CloseFriends + ECBlack_Married +
+      FTWhite_1 + VCNegWhite_1 + VCPosWhite_1 + ECWhite_Neighbors +
+      ECWhite_WorkColleagues + ECWhite_CloseFriends + ECWhite_Married +
+      
+      Openness + Conscientiousness + Extraversion + Agreeableness + Neuroticism +
+      namesrace + namesgender + 
+        movement * namesrace * Race
+      + (1|participant), 
+      
+      data=e_namesfull)
+
+summary(e_m_full)
+```
+
+```{r}
+e_m_full2 = lmer(log(response_time) ~
+      movement + Age + Race + 
+       VCPosWhite_1 +
+        movement * namesrace * Race
+      + (1|participant), 
+      
+      data=e_namesfull)
+
+summary(e_m_full2)
+
+# White people approaching White Names.
+White_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","namesracewhite","movementApproach:namesracewhite","movementApproach:RaceWhite","RaceWhite:namesracewhite","movementApproach:RaceWhite:namesracewhite"))
+1-exp(White_Part_A_WN)
+
+
+#Black People approaching White Names
+Black_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","namesracewhite","movementApproach:namesracewhite"))
+exp(Black_Part_A_WN)
+
+
+#White People approaching Black Names
+White_Part_A_BN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","movementApproach:RaceWhite"))
+1-exp(White_Part_A_BN) 
+
+
+# White people avoiding White Names.
+White_Part_Av_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("RaceWhite","namesracewhite","RaceWhite:namesracewhite"))
+1-exp(White_Part_Av_WN)
+
+
+
+# White people approach White Names Vs Black Names
+White_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","movementApproach:namesracewhite","RaceWhite:namesracewhite","movementApproach:RaceWhite:namesracewhite"))
+exp(White_Part_A_WNvsBN)
+
+
+# Black people approach White Names Vs Black Names
+Black_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","movementApproach:namesracewhite"))
+exp(-Black_Part_A_WNvsBN)
+
+
+# White people avoid White Names Vs Black Names
+White_Part_Av_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCPosWhite_1","movement*namesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("namesracewhite","RaceWhite:namesracewhite"))
+exp(White_Part_Av_WNvsBN)
+```
+
+### Explicit Faces
+
+```{r}
+e_m_full_faces = lmer(log(response_time) ~
+      movement + Age + Sex + Race + Political_1 + Occupations + white_black + 
+      
+      FTBlack_1 + VCNegBlack_1 + VCPosBlack_1 + ECBlack_Neighbors +
+      ECBlack_WorkColleagues + ECBlack_CloseFriends + ECBlack_Married +
+      FTWhite_1 + VCNegWhite_1 + VCPosWhite_1 + ECWhite_Neighbors +
+      ECWhite_WorkColleagues + ECWhite_CloseFriends + ECWhite_Married +
+      
+      Openness + Conscientiousness + Extraversion + Agreeableness + Neuroticism +
+      facesrace + facesgender + 
+        movement * facesrace * Race
+      + (1|participant), 
+      
+      data=e_facesfull)
+
+summary(e_m_full_faces)
+```
+
+```{r}
+e_m_full_faces2 = lmer(log(response_time) ~
+      movement + Age + VCNegWhite_1 +
+        movement * facesrace * Race
+      + (1|participant), 
+      
+      data=e_facesfull)
+
+summary(e_m_full_faces2)
+
+
+# White people approaching White Names.
+White_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","facesracewhite","movementApproach:facesracewhite","movementApproach:RaceWhite","facesracewhite:RaceWhite","movementApproach:facesracewhite:RaceWhite"))
+exp(White_Part_A_WN)
+
+
+#Black People approaching White Names
+Black_Part_A_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","facesracewhite","movementApproach:facesracewhite"))
+exp(Black_Part_A_WN)
+
+
+#White People approaching Black Names
+White_Part_A_BN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("movementApproach","RaceWhite","movementApproach:RaceWhite"))
+exp(White_Part_A_BN) 
+
+
+# White people avoiding White Names.
+White_Part_Av_WN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("RaceWhite","facesracewhite","facesracewhite:RaceWhite"))
+exp(White_Part_Av_WN)
+
+
+
+# White people approach White Names Vs Black Names
+White_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","movementApproach:facesracewhite","facesracewhite:RaceWhite","movementApproach:facesracewhite:RaceWhite"))
+exp(White_Part_A_WNvsBN)
+
+
+# Black people approach White Names Vs Black Names
+Black_Part_A_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","movementApproach:facesracewhite"))
+exp(-Black_Part_A_WNvsBN)
+
+
+# White people avoid White Names Vs Black Names
+White_Part_Av_WNvsBN = bootstrap_func(target="log(response_time)",ind_var=c("movement","Age","Race","VCNegWhite_1","movement*facesrace*Race"),group_var="participant",dataset=e_namesfull,coef_interest=c("facesracewhite","facesracewhite:RaceWhite"))
+exp(White_Part_Av_WNvsBN)
+```
+
+### Implicit Names
+
+```{r}
+i_m_full = lmer(log(response_time) ~
+      movement + Age + Sex + Race + Political_1 + Occupations + white_black + 
+      
+      FTBlack_1 + VCNegBlack_1 + VCPosBlack_1 + ECBlack_Neighbors +
+      ECBlack_WorkColleagues + ECBlack_CloseFriends + ECBlack_Married +
+      FTWhite_1 + VCNegWhite_1 + VCPosWhite_1 + ECWhite_Neighbors +
+      ECWhite_WorkColleagues + ECWhite_CloseFriends + ECWhite_Married +
+      
+      Openness + Conscientiousness + Extraversion + Agreeableness + Neuroticism +
+      namesrace + namesgender + 
+        movement * namesrace * Race
+      + (1|participant), 
+      
+      data=i_namesfull)
+
+summary(i_m_full)
+```
+
+```{r}
+i_m_full2 = lmer(log(response_time) ~
+      movement + Age + Sex + Race + Political_1 + 
+      FTBlack_1 + 
+        movement * namesrace * Race
+      + (1|participant), 
+      
+      data=i_namesfull)
+
+summary(i_m_full2)
+```
+
+### Implicit Faces
+
+```{r}
+i_m_full_faces = lmer(log(response_time) ~
+      movement + Age + Sex + Race + Political_1 + Occupations + white_black + 
+      
+      FTBlack_1 + VCNegBlack_1 + VCPosBlack_1 + ECBlack_Neighbors +
+      ECBlack_WorkColleagues + ECBlack_CloseFriends + ECBlack_Married +
+      FTWhite_1 + VCNegWhite_1 + VCPosWhite_1 + ECWhite_Neighbors +
+      ECWhite_WorkColleagues + ECWhite_CloseFriends + ECWhite_Married +
+      
+      Openness + Conscientiousness + Extraversion + Agreeableness + Neuroticism +
+      facesrace + facesgender + 
+        movement * facesrace * Race
+      + (1|participant), 
+      
+      data=i_facesfull)
+
+summary(i_m_full_faces)
+```
+
+```{r}
+i_m_full_faces2 = lmer(log(response_time) ~
+      movement + Age + Neuroticism + white_black + #Occupations +
+        movement * facesrace * Race
+      + (1|participant), 
+      
+      data=i_facesfull)
+
+summary(i_m_full_faces2)
+```
