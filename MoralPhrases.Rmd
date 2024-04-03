@@ -1,0 +1,179 @@
+```{r}
+library('lme4')
+library('lmerTest')
+library("dplyr")
+library(tidyverse)
+source("Functions.R")
+```
+
+````{r}
+data<-read.csv("moraldata/phrasesmergedtoanalyze.csv")
+head(data,5)
+```
+```{r}
+newdata <- data[ which(data$movement != 3 & data$accuracy == 1 
+                       & data$accuracy_total >= 0.75 
+                       & data$response_time >= 100 ), ]
+
+newdata <- newdata[ which(newdata$response_time <= 2500), ]
+
+```
+
+```{r}
+newdata$Implicit_RC <- relevel(as.factor(newdata$ImpVsExp),ref='Explicit')
+newdata$Moral_ValenceRC <- relevel(as.factor(newdata$Moral_Valence),ref='Neutral')
+newdata$Movement_RC <- relevel(as.factor(newdata$movement),ref='Avoid')
+```
+
+```{r}
+newdata$BirthGender = as.factor(newdata$BirthGender)
+newdata$Race = as.factor(newdata$Race)
+
+newdata = newdata %>%
+  mutate(MoralRating_Cat = case_when(MoralRating < 40 ~ "Immoral",
+                                     MoralRating >= 40 & MoralRating <=60 ~ "Neutral",
+                                     MoralRating > 60 ~ "Moral",
+                                     is.na(MoralRating) ~ as.character(Moral_ValenceRC)))
+newdata$MoralRating_Cat = relevel(as.factor(newdata$MoralRating_Cat),ref="Neutral")
+newdata_implicit = newdata%>%filter(Implicit_RC == "Implicit")
+newdata_explicit = newdata%>%filter(Implicit_RC=="Explicit")
+```
+
+```{r}
+set.seed(10)
+model_explicit = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=newdata_explicit)
+summary(model_explicit)
+
+# Explicit Approach Moral
+E_A_Moral= bootstrap_func(target="log(response_time)",ind_var=c("BirthGender","Race","Age","Movement_RC*MoralRating_Cat"),group_var = "participant",dataset = newdata_explicit,coef_interest = c("Movement_RCApproach","MoralRating_CatMoral","Movement_RCApproach:MoralRating_CatMoral"))
+exp(E_A_Moral)
+
+
+# Explicit Approach Immoral
+E_A_Immoral = bootstrap_func(target="log(response_time)",ind_var=c("BirthGender","Race","Age","Movement_RC*MoralRating_Cat"),group_var = "participant",dataset = newdata_explicit,coef_interest = c("Movement_RCApproach","MoralRating_CatImmoral","Movement_RCApproach:MoralRating_CatImmoral"))
+exp(E_A_Immoral)
+
+
+# Is approaching Moral significantly faster than approaching immoral?
+bootstrap_est = replicate(1000,{
+  sample_indices = sample(nrow(newdata_explicit),replace=TRUE)
+  sample_data = newdata_explicit[sample_indices,]
+  boot_model = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=sample_data)
+  comp_effect = summary(boot_model)$coefficients["MoralRating_CatMoral","Estimate"]+summary(boot_model)$coefficients["Movement_RCApproach:MoralRating_CatMoral","Estimate"]-summary(boot_model)$coefficients["MoralRating_CatImmoral","Estimate"]-summary(boot_model)$coefficients["Movement_RCApproach:MoralRating_CatImmoral","Estimate"]
+  
+  return(comp_effect)
+})
+composite_effect_mean <- mean(bootstrap_est)
+composite_effect_se <- sd(bootstrap_est)
+t_value <- composite_effect_mean / composite_effect_se
+2 * pt(-abs(t_value), df = length(bootstrap_est) - 1) < 0.05
+
+sorted_estimates <- sort(bootstrap_est)
+
+# Calculate the indices for the 2.5th and 97.5th percentiles
+lower_index <- floor(0.025 * length(sorted_estimates))
+upper_index <- ceiling(0.975 * length(sorted_estimates))
+
+# Use these indices to find the corresponding values in the sorted list
+lower_bound <- sorted_estimates[lower_index]
+upper_bound <- sorted_estimates[upper_index]
+
+c(lower_bound,upper_bound)
+
+
+# Is avoiding immoral significantly faster than avoiding moral?
+
+bootstrap_est = replicate(1000,{
+  sample_indices = sample(nrow(newdata_explicit),replace=TRUE)
+  sample_data = newdata_explicit[sample_indices,]
+  boot_model = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=sample_data)
+  comp_effect = summary(boot_model)$coefficients["MoralRating_CatMoral","Estimate"]-summary(boot_model)$coefficients["MoralRating_CatImmoral","Estimate"]
+  
+  return(comp_effect)
+})
+composite_effect_mean <- mean(bootstrap_est)
+composite_effect_se <- sd(bootstrap_est)
+t_value <- composite_effect_mean / composite_effect_se
+2 * pt(-abs(t_value), df = length(bootstrap_est) - 1) < 0.05
+
+sorted_estimates <- sort(bootstrap_est)
+
+# Calculate the indices for the 2.5th and 97.5th percentiles
+lower_index <- floor(0.025 * length(sorted_estimates))
+upper_index <- ceiling(0.975 * length(sorted_estimates))
+
+# Use these indices to find the corresponding values in the sorted list
+lower_bound <- sorted_estimates[lower_index]
+upper_bound <- sorted_estimates[upper_index]
+
+c(lower_bound,upper_bound)
+```
+
+```{r}
+model_trial_implicit = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=newdata_implicit)
+summary(model_trial_implicit)
+
+# Implicit Approach Moral
+I_A_Moral= bootstrap_func(target="log(response_time)",ind_var=c("BirthGender","Race","Age","Movement_RC*MoralRating_Cat"),group_var = "participant",dataset = newdata_implicit,coef_interest = c("Movement_RCApproach","MoralRating_CatMoral","Movement_RCApproach:MoralRating_CatMoral"))
+exp(E_A_Moral)
+
+# Implicit Approach Immoral
+I_A_Immoral = bootstrap_func(target="log(response_time)",ind_var=c("BirthGender","Race","Age","Movement_RC*MoralRating_Cat"),group_var = "participant",dataset = newdata_implicit,coef_interest = c("Movement_RCApproach","MoralRating_CatImmoral","Movement_RCApproach:MoralRating_CatImmoral"))
+exp(I_A_Immoral)
+
+# Is approaching Moral significantly faster than avoiding Moral?
+
+bootstrap_est = replicate(1000,{
+  sample_indices = sample(nrow(newdata_implicit),replace=TRUE)
+  sample_data = newdata_implicit[sample_indices,]
+  boot_model = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=sample_data)
+  comp_effect = summary(boot_model)$coefficients["MoralRating_CatMoral","Estimate"]+summary(boot_model)$coefficients["Movement_RCApproach:MoralRating_CatMoral","Estimate"]-summary(boot_model)$coefficients["MoralRating_CatImmoral","Estimate"]-summary(boot_model)$coefficients["Movement_RCApproach:MoralRating_CatImmoral","Estimate"]
+  
+  return(comp_effect)
+})
+composite_effect_mean <- mean(bootstrap_est)
+composite_effect_se <- sd(bootstrap_est)
+t_value <- composite_effect_mean / composite_effect_se
+2 * pt(-abs(t_value), df = length(bootstrap_est) - 1) < 0.05
+
+sorted_estimates <- sort(bootstrap_est)
+
+# Calculate the indices for the 2.5th and 97.5th percentiles
+lower_index <- floor(0.025 * length(sorted_estimates))
+upper_index <- ceiling(0.975 * length(sorted_estimates))
+
+# Use these indices to find the corresponding values in the sorted list
+lower_bound <- sorted_estimates[lower_index]
+upper_bound <- sorted_estimates[upper_index]
+
+c(lower_bound,upper_bound)
+
+
+# Is avoiding Moral significantly faster than avoiding Moral?
+
+bootstrap_est = replicate(1000,{
+  sample_indices = sample(nrow(newdata_implicit),replace=TRUE)
+  sample_data = newdata_implicit[sample_indices,]
+  boot_model = lmer(log(response_time)~BirthGender+Race+Age+Movement_RC*MoralRating_Cat+(1|participant),data=sample_data)
+  comp_effect = summary(boot_model)$coefficients["MoralRating_CatMoral","Estimate"]-summary(boot_model)$coefficients["MoralRating_CatImmoral","Estimate"]
+  
+  return(comp_effect)
+})
+composite_effect_mean <- mean(bootstrap_est)
+composite_effect_se <- sd(bootstrap_est)
+t_value <- composite_effect_mean / composite_effect_se
+2 * pt(-abs(t_value), df = length(bootstrap_est) - 1) < 0.05
+
+sorted_estimates <- sort(bootstrap_est)
+
+# Calculate the indices for the 2.5th and 97.5th percentiles
+lower_index <- floor(0.025 * length(sorted_estimates))
+upper_index <- ceiling(0.975 * length(sorted_estimates))
+
+# Use these indices to find the corresponding values in the sorted list
+lower_bound <- sorted_estimates[lower_index]
+upper_bound <- sorted_estimates[upper_index]
+
+c(lower_bound,upper_bound)
+
+```
