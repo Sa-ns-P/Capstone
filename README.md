@@ -1,18 +1,13 @@
 **Repository Roadmap:**
 
-Assignments: 
-
-Contains our first semester work (presentation (Moral), milestone report, and our project motivation)
-Capstone Presentation: our presentation given at the symposium (3/29/2024)
-
-Modeling and Results:
-
-Functions.R: code to run bootstrap
-MoralImages.Rmd: Analysis on moral approach/avoidance for images (implicit/explicit)
-MoralPhrases.Rmd: Analysis on moral approach/avoidance for phrases (implicit/explicit)
-Racial_Approach_Avoidance.qmd: Analysis on racial approach/avoidance (includes both faces and names, implicit and explicit)
-
-Preprocessing and ML: Contains files used for data processing, white/black ratio feature engineering for analysis, and ML models
+1. Assignments: Contains our first semester work (presentation (Moral), milestone report, and our project motivation)
+2. Modeling and Results:
+      * Functions.R: code to run bootstrap
+      * MoralImages.Rmd: Analysis on moral approach/avoidance for images (implicit/explicit)
+      * MoralPhrases.Rmd: Analysis on moral approach/avoidance for phrases (implicit/explicit)
+      * Racial_Approach_Avoidance.qmd: Analysis on racial approach/avoidance (includes both faces and names, implicit and explicit)
+3. Preprocessing and ML: Contains files used for data processing, white/black ratio feature engineering for analysis, and ML models
+4. Capstone Presentation: our presentation given at the symposium (3/29/2024)
 
 
 **Summary of Results:**
@@ -32,7 +27,7 @@ Findings: Yes!-
 * White People Avoid White Names faster than Black Names​​
 * White People Avoid Black Faces faster than White Faces
 
-_NB: We are not trying to imply racism, but more or less explaining a tendency of approaching something one is familiar with or avoiding something one is unfamiliar with. _
+NB: We are not trying to imply racism, but more or less explaining a tendency of approaching something one is familiar with or avoiding something one is unfamiliar with.
 
 **How to replicate this code:**
 
