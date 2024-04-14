@@ -51,8 +51,8 @@ In this section, we will dive deep into our experimentation process, which invol
 Implicit/explicit, phrases/images
 
 #### Discussion of Findings <a name="Findings-Moral"></a>
-![moral-images](./Modeling and Results/figures/moral_images.jpg)
-![moral-phrases](./Modeling and Results/figures/moral_phrases.jpg)
+![moral-images](./Modeling and Results/figures/moral_images.png)
+![moral-phrases](./`Modeling and Results`/figures/moral_phrases.jpg)
 
 tables, graphs
 
