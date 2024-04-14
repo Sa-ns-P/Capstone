@@ -4,36 +4,48 @@
 1. [Abstract](#Abstract)
 2. [Introduction](#Introduction)  
 3. [Methods](#Methods)  
-   3.1 [Overview](#Overview)  
-   3.2 [Add to this](#Distillation)  
 4. [Results](#Results)  
-   4.1. [Moral Approach-Avoidance](#Results-Moral)  
-      4.1.1. [Setup](#Setup)  
-      4.1.2. [Metrics](#Metrics)    
-      4.1.3. [Models](#Models)   
-      4.1.4. [Results](#Results)   
-   4.2. [Racial Approach-Avoidance](#Results-Racial)  
-      4.2.1. [Experiment setup](#Setup)
-      4.2.2. [Metrics](#Metrics)    
-      4.2.3. [Models](#Models)   
-      4.2.4. [Results](#Results) 
-5. [Conclusion](#Conclusion)
-6. [Repository Roadmap](#Roadmap)  
-7. [Contributors](#Contributors)
+   4.1. [Moral Approach-Avoidance](#Results-Moral)
+         4.1.1. [Setup](#Setup-Moral)
+         4.1.2  [Discussion of Findings](#Findings-Moral)
+   4.2. [Racial Approach-Avoidance](#Results-Racial)
+         4.1.1. [Setup](#Setup-Racial)
+         4.1.2  [Discussion of Findings](#Findings-Racial) 
+6. [Conclusion](#Conclusion)
+7. [Repository Roadmap](#Roadmap)  
+8. [Contributors](#Contributors)
 
 ## Abstract <a name="Abstract"></a>
+All animal behavior is based on approach and avoidance motivations. Organisms tend to approach things that are positively valenced or beneficial to them and avoid things that are negatively valenced or harmful to them. The automaticity of these fundamental motivations has been supported extensively with empirical research using various types of stimuli, including food, cannabis, animals, and human faces. However, no such research has been published that examines how, if at all, humans manifest automatic approach-avoidance tendencies to moral stimuli in their environment. This is critical as moral interactions are among the most important happenings in an individual’s day-to-day life. Our interactions with one another are shaped by various things (e.g., gender, age, attraction), but perhaps the most salient is race. Our racial identity and the perceived racial identity of those we interact with critically shape our cognition and behavior. Thus,  we must also examine these moral approach-avoidance tendencies in conjunction with varying racial identities.
 
+To that end, three main steps naturally must occur. First, there must be an examination of moral approach-avoidance tendencies. Second, there must be an examination of racial approach-avoidance tendencies. And third, they must be examined in combination. This capstone project involved with the first two steps. Using traditional null hypothesis testing inferential statistics and machine learning algorithms, our results suggest we were able to successfully capture and identify both moral and racial approach-avoidance tendencies in isolation. Regarding morality, a modified online approach-avoidance task showed people are quicker to approach three-word phrases that are morally good compared to morally bad as well as avoiding morally bad images faster than morally good ones. Regarding race, people generally show an in-group preference where they approach faces or names that are congruent with their own racial identity quicker incongruent and avoid incongruent race stimuli faster than congruent race stimuli. Taken together, these results provide evidence and motivation to look at the interaction of racial and moral approach-avoidance tendencies. 
 
 ## Introduction <a name="Introduction"></a>
 
+## Methods
+linear mixed effect modeling
+bootstrapping
 
-# Results <a name="Results"></a>
+## Results <a name="Results"></a>
 In this section, we will dive deep into our experimentation process, which involved exploring and testing both existing and novel churn reduction methods.
 
-## Setup <a name="Setup"></a>
-TODO
+### Moral Approach-Avoidance <a name="Results-Moral"></a>
 
-# Conclusion <a name="Conclusion"></a>
+#### Setup <a name="Setup-Moral"></a>
+Implicit/explicit, phrases/images
+
+#### Discussion of Findings <a name="Findings-Moral"></a>
+tables, graphs
+
+### Racial Approach-Avoidance <a name="Results-Racial"></a>
+
+#### Setup <a name="Setup-Racial"></a>
+implicit/explicit, names/faces
+
+#### Discussion of Findings <a name="Findings-Racial"></a>
+tables, graphs
+
+## Conclusion <a name="Conclusion"></a>
 
 Q1: Do humans exhibit moral approach-avoidance tendencies (and can they serve as proxies for implicit attitudes)?
 
