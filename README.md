@@ -51,11 +51,16 @@ In this section, we will dive deep into our experimentation process, which invol
 Implicit/explicit, phrases/images
 
 #### Discussion of Findings <a name="Findings-Moral"></a>
+##### Phrases
+![moral-phrases](./Modeling_and_Results/figures/moral_phrases.png)
+* Within Explicit, approaching moral phrases is 4.04% faster than immoral phrases, 95% CI: (2.24%, 5.67%)
+* Within Explicit, difference in avoiding is not significant.
+
+
+##### Images
 ![moral-images](./Modeling_and_Results/figures/moral_images.png)
-![moral-phrases](./`Modeling and Results`/figures/moral_phrases.jpg)
-
-tables, graphs
-
+* Within Explicit, approaching immoral photos is 4.46% faster than moral photos, 95% CI: (2.23%, 6.85%)
+* Within Explicit, Avoiding Immoral Photos is 3.16% faster than avoiding Moral Photos, 95% CI: (1.19%, 5.18%)
 
 
 ### Racial Approach-Avoidance <a name="Results-Racial"></a>
