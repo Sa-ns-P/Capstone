@@ -37,9 +37,55 @@ While there are many Approach-Avoidance Tendencies (AAT) methods available to re
 
 ## Data and Methodology
 TODO
-- about the data
-- linear mixed effect modeling (When relevant, link to code or notebooks)
-- bootstrapping (When relevant, link to code or notebooks)
+- fill in models
+- fill in dataset numbesr
+- fill in moral hypotheses
+- When relevant, link to code or notebooks)
+
+##### About the Data
+Study 1 : MAAT
+
+For the Moral approach-avoidance task, we had two datasets: phrases and images. For the phrases dataset, we surveyed ____ individuals on numerous prompts, creating a collective _____ number of trials (both explicit/implicit and varying moral valence). For the images dataset, …..
+
+**Variables**: For the implicit task, the individuals were given a series of stimuli and were told to either approach/avoid the stimuli based on its moral content (i.e., Jon could be assigned to approach immoral valence and avoid moral valence). The stimuli had varying moral valence: moral, neutral, and immoral. In case for mistakes/misunderstanding of the task, we measured accuracy; however, we were interested in measuring response time, which is our response variable. Before the task, respondants were asked to fill out a questionnaire to gather vital variables for our analysis. These variables include participant age, gender, race/ethnicity, political leaning (scale 1-7), as well as their post-rating on (1) how moral, (2) how pleasant, and (3) how complicated the prompt was to understand. 
+
+Study 2: R-MAAT
+
+For the Racial approach-avoidance task, we again had two datasets: names and faces. For the names dataset, we surveyed ____ individuals: ___ were white and ____ were black (alone). We had a total  _____ number of trials. 
+
+**Varaibles**: The names were composed of either black-sounding names or white-sounding names, and the faces dataset was strictly black or white faces. Following the same structure, individuals were told to either approach or avoid names based on the prompt’s presumed race. Before the task, respondants were asked to fill out a questionnaire to gather informative variables used in the model, which include age, gender, race/ethnicity, marital status, political leaning (scale 1-7), household income, and zip code. The zip code infomration was used to gather the racial demographics where the respondents lived, which was then transformed into a black/white population ratio. More questions were also asked to measure their big 5 personality type as well as their racial surroundings — ie, the number of your closest colleagues who are white/black.
+
+
+##### Modeling
+In both MAAT and R-MAAT, we built a linear regression mixed effect model, where we used participant as a random effect. This is because it is natural to expect person-to-person variability in terms of reaction to a prompt.
+
+The questions of interest were as follows:
+Moral:
+
+
+Racial:
+H1) White people will show an approach bias to white (a) names and (b) faces.
+H2) Black people will show an approach bias to white (a) names and (b) faces.
+H3) The gender of the participant and stimulus will influence the above relationships.
+
+To be able to answer these hypotheses, we had to include interaction terms, and then a bootstrapping analysis to compare between the two populations to test if the difference we see in response time is significant.
+
+To built both the moral (MAAT) and racial (R-MAAT) models, we subdivided each dataset into two, one for the explicit measures and one for the implicit measures. Since there were many explanatory variables, we had our first model include all, as well as the interactions necessary to be able to answer our hypotheses. We then ran that model and looked at the indiividual variable significance level: all variables with a p-value less than 0.1 were included in the next iteration to test for significance again. The process continued until our final model, where only the variables with significance as well as the experimental variables were included in the model.
+
+
+The final model for the moral dataset (explicit):
+
+____
+
+
+The final model for the racial dataset (explicit):
+
+______
+
+
+The implicit modeling was not seen to be significantly useful. A potential culprit to this is the experimental design. When individuals were told to respond based on color, it is likely the color on their screen was overpowering and didn’t need to even process the content at hand to respond to the computer prompt. So, for sake of our results, we only present the edxplicit findings. 
+
+
 
 
 ## Results <a name="Results"></a>
