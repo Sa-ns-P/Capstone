@@ -74,8 +74,7 @@ To built both the moral (MAAT) and racial (R-MAAT) models, we subdivided each da
 
 
 The final model for the moral dataset (explicit):
-
-$$ log(response time_{ij}) = \beta_0 + \beta_{0i} + \beta_1 \times \mathbb{1}(BirthGender = "Female") + \beta_2 \times \mathbb{1}(Race= "White") + ... + \beta_7 \times\mathbb{1} (Race=="Prefer not to answer") + \beta_8\times Age + \beta_9\times \mathbb{1}(Movement="Approach") + \beta_{10}\times \mathbb{1} (Morality = "Moral") + \beta_{11} \times \mathbb{1}(Morality = "Immoral") + \beta_{12}\times \mathbb{1} (Movement="Approach")\times \mathbb{1}(Morality="Moral") + \beta_{13}(Movement="Approach")\times\mathbb{1}("Morality="Immoral") $$
+<img src = "https://latex.codecogs.com/svg.image?log(response\_time_{ij})=\beta_0&plus;\beta_{0i}&plus;\beta_1\times\mathbb{1}(BirthGender="Female")&plus;\beta_2\times\mathbb{1}(Race="White")&plus;...&plus;\beta_7\times\mathbb{1}(Race=="Prefer\;not\;to;[answer")&plus;\beta_8\times&space;Age&plus;\beta_9\times\mathbb{1}(Movement="Approach")&plus;\beta_{10}\times\mathbb{1}(Morality="Moral")&plus;\beta_{11}\times\mathbb{1}(Morality="Immoral")&plus;\beta_{12}\times\mathbb{1}(Movement="Approach")\times\mathbb{1}(Morality="Moral")&plus;\beta_{13}(Movement="Approach")\times\mathbb{1}("Morality="Immoral")">
 ____
 
 
