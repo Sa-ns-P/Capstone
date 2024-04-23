@@ -6,12 +6,12 @@
 3. [Methods](#Methods)  
 4. [Results](#Results)  
    4.1. [Moral Approach-Avoidance](#Results-Moral)
-      4.1.1. [Setup](#Setup-Moral)
-      4.1.2  [Discussion of Findings](#Findings-Moral)
+         4.1.1. [Setup](#Setup-Moral)
+         4.1.2  [Discussion of Findings](#Findings-Moral)
    
    4.2. [Racial Approach-Avoidance](#Results-Racial)
-      4.1.1. [Setup](#Setup-Racial)
-      4.1.2  [Discussion of Findings](#Findings-Racial)
+         4.1.1. [Setup](#Setup-Racial)
+         4.1.2  [Discussion of Findings](#Findings-Racial)
    
 6. [Conclusion](#Conclusion)
 7. [Replicating the Analysis](#Technical-Documentation)
