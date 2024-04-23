@@ -139,11 +139,16 @@ tables, graphs
   <img src="./Modeling_and_Results/figures/Explicit-Racial-names.png">
 </p>
 
+* Black participants approach Black Names 14.78% faster than White Names, 95% CI: (11.69%, 18.15%)
+* White participants avoid White Names 3.23% faster than Black Names, 95% CI: (0.0079%, 5.57%)
+
 ##### Faces
 <p align="center">
   <img src="./Modeling_and_Results/figures/Explicit-Racial-images.png">
 </p>
 
+* White participants approach White Faces 8.42% faster than Black Faces, 95% CI: (6.41%, 10.35%)
+* White participants avoid Black Faces 7.28% faster than White Faces, 95% CI: (5.00%, 9.64%)
 
 
 ## Conclusion <a name="Conclusion"></a>
