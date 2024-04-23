@@ -105,8 +105,10 @@ Implicit/explicit, phrases/images
 <p align="center">
   <img src="/Modeling_and_Results/figures/moral_phrases.png">
 </p>
-- Within Explicit, approaching moral phrases is 4.04% faster than immoral phrases, 95% CI: (2.24%, 5.67%)
-- Within Explicit, difference in avoiding is not significant.
+
+* Within Explicit, approaching moral phrases is 4.04% faster than immoral phrases, 95% CI: (2.24%, 5.67%)
+* Within Explicit, difference in avoiding is not significant.
+
 <p align="center">
   <img src="/Modeling_and_Results/figures/Moral-Explicit-phrases.png">
 </p>
@@ -116,8 +118,10 @@ Implicit/explicit, phrases/images
 <p align="center">
   <img src="./Modeling_and_Results/figures/moral_images.png">
 </p>
-- Within Explicit, approaching immoral photos is 4.46% faster than moral photos, 95% CI: (2.23%, 6.85%)
-- Within Explicit, Avoiding Immoral Photos is 3.16% faster than avoiding Moral Photos, 95% CI: (1.19%, 5.18%)
+
+* Within Explicit, approaching immoral photos is 4.46% faster than moral photos, 95% CI: (2.23%, 6.85%)
+* Within Explicit, Avoiding Immoral Photos is 3.16% faster than avoiding Moral Photos, 95% CI: (1.19%, 5.18%)
+
 <p align="center">
   <img src="./Modeling_and_Results/figures/Moral_Explicit-images.png">
 </p>
