@@ -40,16 +40,16 @@ While there are many Approach-Avoidance Tendencies (AAT) methods available to re
 
 ##### About the Data
 Study 1 : MAAT
-* [MoralImg](Modeling_and_Results/MoralImages.Rmd)
-* [MoralPh](Modeling_and_Results/MoralPhrases.Rmd)
+* [Images Analysis](Modeling_and_Results/MoralImages.Rmd)
+* [Phrases Analysis](Modeling_and_Results/MoralPhrases.Rmd)
 
 For the Moral approach-avoidance task, we had two datasets: phrases and images. For the phrases dataset, we surveyed 660 individuals on numerous prompts, creating a collective 49,238 number of prompted results (both explicit/implicit and varying moral valence). For the images dataset, we surveyed an additional 617 individuals, leading to 45,744 number of trials for this dataset.
 
 **Variables**: For the implicit task, the individuals were given a series of stimuli and were told to either approach/avoid the stimuli based on its moral content (i.e., Jon could be assigned to approach immoral valence and avoid moral valence). The stimuli had varying moral valence: moral, neutral, and immoral. In case for mistakes/misunderstanding of the task, we measured accuracy; however, we were interested in measuring response time, which is our response variable. Before the task, respondants were asked to fill out a questionnaire to gather vital variables for our analysis. These variables include participant age, gender, race/ethnicity, political leaning (scale 1-7), as well as their post-rating on (1) how moral, (2) how pleasant, and (3) how complicated the prompt was to understand. 
 
-Study 2: R-MAAT [RacialAA](Modeling_and_Results/Racial_Approach_Avoidance.qmd)
+Study 2: R-MAAT
 
-For the Racial approach-avoidance task, we again had two datasets: names and faces. While we had data for both implicit and explicit racial biases results, our final results we only throughly discuss the explicit prompts. For the explicit names dataset, we surveyed 157 individuals: 89 were white and 68 were black (alone). We had a total 5,748 number of trials. For the explicit faces dataset, we surveyed 185 individuals: 107 were white and 78 were black. We had a total 7,186 number of trials.
+For the [Racial approach-avoidance task](Modeling_and_Results/Racial_Approach_Avoidance.qmd), we again had two datasets: names and faces. While we had data for both implicit and explicit racial biases results, our final results we only throughly discuss the explicit prompts. For the explicit names dataset, we surveyed 157 individuals: 89 were white and 68 were black (alone). We had a total 5,748 number of trials. For the explicit faces dataset, we surveyed 185 individuals: 107 were white and 78 were black. We had a total 7,186 number of trials.
 
 **Varaibles**: The names were composed of either black-sounding names or white-sounding names, and the faces dataset was strictly black or white faces. Following the same structure, individuals were told to either approach or avoid names based on the prompt’s presumed race. Before the task, respondants were asked to fill out a questionnaire to gather informative variables used in the model, which include age, gender, race/ethnicity, marital status, political leaning (scale 1-7), household income, and zip code. The zip code infomration was used to gather the racial demographics where the respondents lived, which was then transformed into a black/white population ratio. More questions were also asked to measure their big 5 personality type as well as their racial surroundings — ie, the number of your closest colleagues who are white/black.
 
@@ -57,7 +57,8 @@ For the Racial approach-avoidance task, we again had two datasets: names and fac
 ##### Modeling
 In both MAAT and R-MAAT, we built a linear regression mixed effect model, where we used participant as a random effect. This is because it is natural to expect person-to-person variability in terms of reaction to a prompt.
 
-The questions of interest were as follows:
+The questions of interest were as follows:   
+
 Moral:
 * Do people show an approach bias to morally good stimuli?
 * Do people show an avoidance bias to morally bad stimuli?
