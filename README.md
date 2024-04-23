@@ -37,22 +37,19 @@ While there are many Approach-Avoidance Tendencies (AAT) methods available to re
 
 
 ## Data and Methodology
-TODO
-- fill in models
-- fill in dataset numbesr
-- fill in moral hypotheses
-- When relevant, link to code or notebooks)
 
 ##### About the Data
 Study 1 : MAAT
+* [MoralImg](Modeling_and_Results/MoralImages.Rmd)
+* [MoralPh](Modeling_and_Results/MoralPhrases.Rmd)
 
-For the Moral approach-avoidance task, we had two datasets: phrases and images. For the phrases dataset, we surveyed ____ individuals on numerous prompts, creating a collective _____ number of trials (both explicit/implicit and varying moral valence). For the images dataset, …..
+For the Moral approach-avoidance task, we had two datasets: phrases and images. For the phrases dataset, we surveyed 660 individuals on numerous prompts, creating a collective 49,238 number of prompted results (both explicit/implicit and varying moral valence). For the images dataset, we surveyed an additional 617 individuals, leading to 45,744 number of trials for this dataset.
 
 **Variables**: For the implicit task, the individuals were given a series of stimuli and were told to either approach/avoid the stimuli based on its moral content (i.e., Jon could be assigned to approach immoral valence and avoid moral valence). The stimuli had varying moral valence: moral, neutral, and immoral. In case for mistakes/misunderstanding of the task, we measured accuracy; however, we were interested in measuring response time, which is our response variable. Before the task, respondants were asked to fill out a questionnaire to gather vital variables for our analysis. These variables include participant age, gender, race/ethnicity, political leaning (scale 1-7), as well as their post-rating on (1) how moral, (2) how pleasant, and (3) how complicated the prompt was to understand. 
 
-Study 2: R-MAAT
+Study 2: R-MAAT [RacialAA](Modeling_and_Results/Racial_Approach_Avoidance.qmd)
 
-For the Racial approach-avoidance task, we again had two datasets: names and faces. For the names dataset, we surveyed ____ individuals: ___ were white and ____ were black (alone). We had a total  _____ number of trials. 
+For the Racial approach-avoidance task, we again had two datasets: names and faces. While we had data for both implicit and explicit racial biases results, our final results we only throughly discuss the explicit prompts. For the explicit names dataset, we surveyed 157 individuals: 89 were white and 68 were black (alone). We had a total 5,748 number of trials. For the explicit faces dataset, we surveyed 185 individuals: 107 were white and 78 were black. We had a total 7,186 number of trials.
 
 **Varaibles**: The names were composed of either black-sounding names or white-sounding names, and the faces dataset was strictly black or white faces. Following the same structure, individuals were told to either approach or avoid names based on the prompt’s presumed race. Before the task, respondants were asked to fill out a questionnaire to gather informative variables used in the model, which include age, gender, race/ethnicity, marital status, political leaning (scale 1-7), household income, and zip code. The zip code infomration was used to gather the racial demographics where the respondents lived, which was then transformed into a black/white population ratio. More questions were also asked to measure their big 5 personality type as well as their racial surroundings — ie, the number of your closest colleagues who are white/black.
 
@@ -62,12 +59,13 @@ In both MAAT and R-MAAT, we built a linear regression mixed effect model, where 
 
 The questions of interest were as follows:
 Moral:
-
+* Do people show an approach bias to morally good stimuli?
+* Do people show an avoidance bias to morally bad stimuli?
 
 Racial:
-H1) White people will show an approach bias to white (a) names and (b) faces.
-H2) Black people will show an approach bias to white (a) names and (b) faces.
-H3) The gender of the participant and stimulus will influence the above relationships.
+* Will White people show an approach bias to white (a) names and (b) faces?
+* Will Black people will show an approach bias to white (a) names and (b) faces?
+* Will the gender of the participant and stimulus will influence the above relationships?
 
 To be able to answer these hypotheses, we had to include interaction terms, and then a bootstrapping analysis to compare between the two populations to test if the difference we see in response time is significant.
 
@@ -91,7 +89,7 @@ The implicit modeling was not seen to be significantly useful. A potential culpr
 
 
 ## Results <a name="Results"></a>
-In this section, we will dive deep into our experimentation process, which involved exploring and testing both existing and novel churn reduction methods.
+In this section, we will discuss...
 
 ### Moral Approach-Avoidance <a name="Results-Moral"></a>
 
