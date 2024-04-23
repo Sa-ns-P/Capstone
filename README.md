@@ -99,10 +99,14 @@ Implicit/explicit, phrases/images
 
 #### Discussion of Findings <a name="Findings-Moral"></a>
 ##### Phrases
-<p align="center">![moral-phrases](./Modeling_and_Results/figures/moral_phrases.png)</p>
+![moral-phrases]<p align="center">
+  <img src="/Modeling_and_Results/figures/moral_phrases.png">
+</p>
 * Within Explicit, approaching moral phrases is 4.04% faster than immoral phrases, 95% CI: (2.24%, 5.67%)
 * Within Explicit, difference in avoiding is not significant.
-<p align="center">![moral-phrases-table](./Modeling_and_Results/figures/Moral-Explicit-phrases.png)</p>
+![moral-phrases-table]<p align="center">
+  <img src="/Modeling_and_Results/figures/Moral-Explicit-phrases.png">
+</p>
 
 
 ##### Images
@@ -124,10 +128,14 @@ implicit/explicit, names/faces
 #### Discussion of Findings <a name="Findings-Racial"></a>
 tables, graphs
 ##### Names
-<p align="center">![racial-names-table](./Modeling_and_Results/figures/Explicit-Racial-names.png)</p>
+![racial-names-table]<p align="center">
+  <img src="./Modeling_and_Results/figures/Explicit-Racial-names.png">
+</p>
 
 ##### Faces
-<p align="center">![racial-faces-table](./Modeling_and_Results/figures/Explicit-Racial-images.png)</p>
+![racial-faces-table]<p align="center">
+  <img src="./Modeling_and_Results/figures/Explicit-Racial-images.png">
+</p>
 
 
 
