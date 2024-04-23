@@ -99,17 +99,17 @@ Implicit/explicit, phrases/images
 
 #### Discussion of Findings <a name="Findings-Moral"></a>
 ##### Phrases
-<div align="center">![moral-phrases](./Modeling_and_Results/figures/moral_phrases.png)</div>
+<p align="center">![moral-phrases](./Modeling_and_Results/figures/moral_phrases.png)</p>
 * Within Explicit, approaching moral phrases is 4.04% faster than immoral phrases, 95% CI: (2.24%, 5.67%)
 * Within Explicit, difference in avoiding is not significant.
-<div align="center">![moral-phrases-table](./Modeling_and_Results/figures/Moral-Explicit-phrases.png)</div>
+<p align="center">![moral-phrases-table](./Modeling_and_Results/figures/Moral-Explicit-phrases.png)</p>
 
 
 ##### Images
-<div align="center">![moral-images](./Modeling_and_Results/figures/moral_images.png)</div>
+<p align="center">![moral-images](./Modeling_and_Results/figures/moral_images.png)</p>
 * Within Explicit, approaching immoral photos is 4.46% faster than moral photos, 95% CI: (2.23%, 6.85%)
 * Within Explicit, Avoiding Immoral Photos is 3.16% faster than avoiding Moral Photos, 95% CI: (1.19%, 5.18%)
-<div align="center">![moral-images-table](./Modeling_and_Results/figures/Moral_Explicit-images.png)</div>
+<p align="center">![moral-images-table](./Modeling_and_Results/figures/Moral_Explicit-images.png)</p>
 
 
 ### Racial Approach-Avoidance <a name="Results-Racial"></a>
@@ -120,10 +120,10 @@ implicit/explicit, names/faces
 #### Discussion of Findings <a name="Findings-Racial"></a>
 tables, graphs
 ##### Names
-<div align="center">![racial-names-table](./Modeling_and_Results/figures/Explicit-Racial-names.png)</div>
+<p align="center">![racial-names-table](./Modeling_and_Results/figures/Explicit-Racial-names.png)</p>
 
 ##### Faces
-<div align="center">![racial-faces-table](./Modeling_and_Results/figures/Explicit-Racial-images.png)</div>
+<p align="center">![racial-faces-table](./Modeling_and_Results/figures/Explicit-Racial-images.png)</p>
 
 
 
