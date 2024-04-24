@@ -82,6 +82,7 @@ ____
 
 
 The final model for the racial dataset (explicit):
+
 <img align = "center" src = 'https://latex.codecogs.com/svg.image?&space;log(response\;time_{ij})=\beta_0&plus;\beta_{0i}&plus;...controls...&plus;\beta_3\times{1\!\!1}(Movement_j="Approach")&plus;\beta_4\times{1\!\!1}(Race_i="White")&plus;\beta_5\times{1\!\!1}(Stimuli\;Race_j="White")&plus;\beta_6\times{1\!\!1}(Movement_j="Approach")\times{1\!\!1}(Race_i="White")&plus;\beta_7\times{1\!\!1}(Movement_j="Approach")\times{1\!\!1}(Stimuli\;Race_j="White")&plus;\beta_8\times{1\!\!1}(Race_i="White")\times{1\!\!1}(Stimuli\;Race_j="White")&plus;\beta_9\times{1\!\!1}(Movement_j="Approach")\times{1\!\!1}(Race_i="White")\times{1\!\!1}(Stimuli\;Race_j="White")'/>
 
 where i indicates participant and j indicates stimuli.
