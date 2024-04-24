@@ -92,16 +92,20 @@ The implicit modeling was not seen to be significantly useful. A potential culpr
 
 
 ## Results <a name="Results"></a>
-In this section, we will discuss...
+In this section, we will discuss the results obtained from our analyses on Moral Approach-Avoidance Behavior, and their interpretation. 
 
 ### Moral Approach-Avoidance <a name="Results-Moral"></a>
 
 #### Setup <a name="Setup-Moral"></a>
-Implicit/explicit, phrases/images
+The graphs display the coefficients and their respective confidence intervals for reaction time when participants approach/avoid, faceted by Implicit/Explicit instruction. The tables discuss the coefficients for Explicit dataset only. We also discuss differences between approaching/avoiding different levels of Moral Valences when they are significant.
 
 #### Discussion of Findings <a name="Findings-Moral"></a>
 
+
 ##### Phrases
+
+- Through the graph, we can observe that there is notable separation between the reaction times for approaching different Moral Valences within the Explicit dataset, with the quickest reaction time being that of participants approaching Moral phrases (11.61% faster than the point of reference). 
+
 <p align="center">
   <img src="/Modeling_and_Results/figures/moral_phrases.png">
 </p>
@@ -115,6 +119,8 @@ Implicit/explicit, phrases/images
 
 
 ##### Images
+- There seems to be a notable separation between the reaction times for both approaching and avoiding different Moral Valences within the Explicit dataset, with the quickest reaction time being that of participants approaching Moral images (10.99% faster than the point of reference).
+
 <p align="center">
   <img src="./Modeling_and_Results/figures/moral_images.png">
 </p>
@@ -128,13 +134,18 @@ Implicit/explicit, phrases/images
 
 
 ### Racial Approach-Avoidance <a name="Results-Racial"></a>
+In this section, we will discuss the results obtained from our analyses on Racial Approach-Avoidance Behavior, and their interpretation. 
 
 #### Setup <a name="Setup-Racial"></a>
-implicit/explicit, names/faces
+The tables discuss the coefficients for Black/White participants approaching/avoiding Black/White names/faces for Explicit dataset only. We also discuss differences between approaching/avoiding different Races when they are significant.
 
 #### Discussion of Findings <a name="Findings-Racial"></a>
-tables, graphs
+
 ##### Names
+
+- White participants appear to have faster reaction times overall.
+- We can observe that the fastest reaction time is that of White participants approaching White names (17.23% faster than the point of reference).
+
 <p align="center">
   <img src="./Modeling_and_Results/figures/Explicit-Racial-names.png">
 </p>
@@ -143,6 +154,10 @@ tables, graphs
 * White participants avoid White Names 3.23% faster than Black Names, 95% CI: (0.0079%, 5.57%)
 
 ##### Faces
+
+- White participants appear to have faster reaction times overall.
+- We can observe that the fastest reaction time is that of White participants approaching White names (10.58% faster than the point of reference).
+
 <p align="center">
   <img src="./Modeling_and_Results/figures/Explicit-Racial-images.png">
 </p>
